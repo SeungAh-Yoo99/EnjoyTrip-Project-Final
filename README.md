@@ -1,1 +1,1 @@
-# S914_SpringBoot_Trip_Kimsunhyung_Yooseungah
+# S914_Trip_Kimsunhyung_Yooseungah
