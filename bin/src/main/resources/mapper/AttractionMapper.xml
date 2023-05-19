@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper file : query가 들어 있음 -->
+<mapper namespace="com.mvc.mapper.AttractionMapper">
+	<select id="selectBySidoCode" parameterType="string" resultType="Attraction">
+		select * from attraction_info where sido_code=#{sido_code}
+	</select>
+	
+	<select id="selectBySidoCodeAndContentTypeId" parameterType="string" resultType="Attraction">
+		select * from attraction_info where sido_code=#{sido_code} and content_type_id=#{content_type_id}
+	</select>
+</mapper>
