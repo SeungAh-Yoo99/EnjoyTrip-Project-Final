@@ -103,7 +103,10 @@ public class UserController {
         int x = service.newPw(user);
 
         Map<String, String> map = new HashMap<>();
-        if(x >= 1) map.put("result", "findPw success!");
+        if(x >= 1) {
+        	map.put("result", "findPw success!");
+        	session.setAttribute("user", user);
+        }
         else map.put("result", "findPw fail!");
         return map;
     }
