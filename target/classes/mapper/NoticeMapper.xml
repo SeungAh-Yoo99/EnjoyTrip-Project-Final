@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper file : query가 들어 있음 -->
+<mapper namespace="com.mvc.mapper.NoticeMapper">
+	<select id="selectAll" resultType="Notice">
+		select * from notice
+	</select>
+	
+	<select id="selectByNoticeId" parameterType="string" resultType="Notice">
+		select * from notice where notice_id=#{notice_id}
+	</select>
+	
+	<insert id="insertNotice">
+		insert into notice (creation_date,content,user_id) values(sysdate(),#{content},#{user_id})
+	</insert>
+	
+	<delete id="deleteNotice" parameterType="string">
+		delete from notice where notice_id=#{notice_id}
+	</delete>
+	
+	<update id="modifyNotice" parameterType="Notice">
+		update notice set content=#{content}, creation_date=sysdate() where notice_id=#{notice_id}
+	</update>
+</mapper>
