@@ -17,7 +17,7 @@ public class UserController {
 	@Autowired
     UserService service;
 
-    @PostMapping(value = "/user/join")
+    @PostMapping(value = "/api/user/join")
     @ApiOperation(notes="회원가입", value="User 객체 등록")
     public Map<String, String> join(@RequestBody User user) throws Exception {
         int x = service.join(user);
@@ -28,24 +28,24 @@ public class UserController {
         return map;
     }
 
-    @PutMapping(value = "/user/modify")
+    @PutMapping(value = "/api/user/modify")
     @ApiOperation(notes="회원 정보 수정", value="User 객체 수정")
-  
     public Map<String, String> modify(HttpSession session,@RequestBody User user) throws Exception {
     	User sessionUser=(User)session.getAttribute("user");
     	sessionUser.setName(user.getName());
-    	sessionUser.setRole(user.getRole());
-    	sessionUser.setPw(user.getPw());
     	
         int x = service.modify((User)session.getAttribute("user"));
 
         Map<String, String> map = new HashMap<>();
-        if(x >= 1) map.put("result", "modify success!");
+        if(x >= 1) {
+        	map.put("result", "modify success!");
+        	session.setAttribute("user", sessionUser);
+        }
         else map.put("result", "modify fail!");
         return map;
     }
 
-    @GetMapping(value = "/user")
+    @GetMapping(value = "/api/user")
     @ApiOperation(notes="회원 정보 조회", value="User 객체 조회")
     public User search(HttpSession session) throws Exception {
     	User sessionUser = (User)session.getAttribute("user");
@@ -53,7 +53,7 @@ public class UserController {
     	else throw new Exception();
     }
 
-    @DeleteMapping(value = "/user")
+    @DeleteMapping(value = "/api/user")
     @ApiOperation(notes="회원 탈퇴", value="User 객체 삭제")
     public Map<String, String> withdraw(HttpSession session) throws Exception {
     	User sessionUser = (User)session.getAttribute("user");
@@ -67,7 +67,7 @@ public class UserController {
         return map;
     }
 
-	@GetMapping(value = "/user/login")
+	@GetMapping(value = "/api/user/login")
 	@ApiOperation(notes="로그인", value="로그인")
 	public Map<String, String> login(@RequestBody User user, HttpSession session) throws Exception{
         User u = service.login(user);
@@ -83,7 +83,7 @@ public class UserController {
         return map;
 	}
 
-    @GetMapping(value = "/user/logout")
+    @GetMapping(value = "/api/user/logout")
     @ApiOperation(notes="로그아웃", value="로그아웃")
     public Map<String, String> logout (HttpSession session) throws Exception{
         session.invalidate();
@@ -93,7 +93,7 @@ public class UserController {
         return map;
     }
 
-    @GetMapping(value = "/user/findPw")
+    @PutMapping(value = "/api/user/findPw")
     @ApiOperation(notes="비밀번호 찾기", value="비밀번호 찾기")
     public Map<String, String> findPw (@RequestBody Map<String, String> rb, HttpSession session) throws Exception{
     	User sessionUser = (User)session.getAttribute("user");
