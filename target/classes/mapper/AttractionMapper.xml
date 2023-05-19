@@ -12,4 +12,28 @@
 	<select id="selectBySidoCodeAndContentTypeId" parameterType="string" resultType="Attraction">
 		select * from attraction_info where sido_code=#{sido_code} and content_type_id=#{content_type_id}
 	</select>
+	
+	<select id="getMaxContentId" resultType="integer">
+		select max(content_id) from attraction_info
+	</select>
+	
+	<insert id="registration" parameterType="Attraction">
+		insert into attraction_info(content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, first_image2, sido_code, gugun_code, latitude, longitude, ad, user_id) values(#{content_id}, #{content_type_id}, #{title}, #{addr1}, #{addr2}, #{zipcode}, #{tel}, #{first_image}, #{first_image2}, #{sido_code}, #{gugun_code}, #{latitude}, #{longitude}, #{ad}, #{user_id})
+	</insert>
+	
+	<delete id="delete" parameterType="string">
+		delete from attraction_info where content_id=#{content_id}
+	</delete>
+	
+	<update id="modify" parameterType="Attraction">
+		update attraction_info set content_type_id = #{content_type_id}, title = #{title}, addr1 = #{addr1}, addr2 = #{addr2}, zipcode = #{zipcode}, tel = #{tel}, first_image = #{first_image}, first_image2 = #{first_image2}, sido_code = #{sido_code}, gugun_code = #{gugun_code}, latitude = #{latitude}, longitude = #{longitude}, ad = #{ad}, user_id = #{user_id} where content_id = #{content_id}
+	</update>
+	
+	<select id="hotplace" resultType="Attraction">
+		SELECT ai.* FROM attraction_info ai JOIN (SELECT al.content_id FROM attraction_like al GROUP BY al.content_id ORDER BY COUNT(*) DESC LIMIT 10) AS subquery ON ai.content_id = subquery.content_id;
+	</select>
+	
+	<insert id="like" parameterType="AttractionLike">
+		INSERT INTO attraction_like VALUES(#{content_id}, #{user_id})
+	</insert>
 </mapper>

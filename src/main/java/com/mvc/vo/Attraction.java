@@ -18,7 +18,7 @@ public class Attraction {
 	private String zipcode;
 	private String tel;
 	private String first_image;
-	private String second_image;
+	private String first_image2;
 	private String readcount;
 	private String sido_code;
 	private String gugun_code;

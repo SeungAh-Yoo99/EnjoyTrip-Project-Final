@@ -3,6 +3,7 @@ package com.mvc.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mvc.vo.Attraction;
+import com.mvc.vo.AttractionLike;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,5 +14,16 @@ public interface AttractionMapper {
 	List<Attraction> selectBySidoCode(String sido_code) throws SQLException;
 
 	List<Attraction> selectBySidoCodeAndContentTypeId(String sido_code, String content_type_id) throws SQLException;
+	
+	Integer getMaxContentId() throws SQLException;
 
+	int registration(Attraction attr) throws SQLException;
+
+	int delete(String content_id) throws SQLException;
+
+	int modify(Attraction attr) throws SQLException;
+
+	List<Attraction> hotplace() throws SQLException;
+
+	int like(AttractionLike attrLike) throws SQLException;
 }
