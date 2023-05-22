@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin("*")
 @RestController
 public class UserController {
 	
@@ -67,7 +68,7 @@ public class UserController {
         return map;
     }
 
-	@GetMapping(value = "/api/user/login")
+	@PostMapping(value = "/api/user/login")
 	@ApiOperation(notes="로그인", value="로그인")
 	public Map<String, String> login(@RequestBody User user, HttpSession session) throws Exception{
         User u = service.login(user);
@@ -79,7 +80,9 @@ public class UserController {
         }
 
         session.setAttribute("user", u);
-        map.put("result", "login success");
+        map.put("id", u.getId());
+        map.put("name", u.getName());
+        map.put("role", u.getRole());
         return map;
 	}
 
