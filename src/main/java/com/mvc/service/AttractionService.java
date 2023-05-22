@@ -12,6 +12,7 @@ public interface AttractionService {
 
 	List<Attraction> selectBySidoCodeAndContentTypeId(String sido_code, String content_type_id) throws Exception;
 
+	Attraction selectByContentId(String content_id) throws Exception;
 	int registration(Attraction attr) throws Exception;
 
 	int delete(String content_id) throws Exception;

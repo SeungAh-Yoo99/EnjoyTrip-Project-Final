@@ -27,5 +27,6 @@ public class Attraction {
 	private String mlevel;
 	private String ad;
 	private String user_id;
+	private String overview;
 	
 }

@@ -90,4 +90,9 @@ public class AttractionServiceImpl implements AttractionService {
 		return mapper.select_ad_attraction();
 	}
 
+	@Override
+	public Attraction selectByContentId(String content_id) throws Exception {
+		return mapper.selectByContentId(content_id);
+	}
+
 }

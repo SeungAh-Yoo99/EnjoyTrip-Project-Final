@@ -37,6 +37,13 @@ public class AttractionController {
         return service.selectBySidoCode(sido_code);
     }
 	
+	@GetMapping(value="/api/attraction/id/{content_id}")
+	@ApiOperation(notes="content_id 여행지 정보 조회",value="content_id 여행지 정보 조회")
+	public Attraction selectByContentId(@PathVariable String content_id) throws Exception{
+		Attraction attr=service.selectByContentId(content_id);
+		return attr;
+	}
+	
 	@GetMapping(value = "/api/attraction/search")
     @ApiOperation(notes="지역별 원하는 컨텐츠 별 관광지 정보 찾기", value="sido_code & content_type_id 별 관광지 정보 찾기")
     public List<Attraction> selectBySidoCodeAndContentTypeId(@RequestParam("sido_name") String sidoName, @RequestParam("content_type_name") String contentTypeName) throws Exception {

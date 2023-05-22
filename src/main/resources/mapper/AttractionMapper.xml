@@ -21,6 +21,10 @@
 					where content_type_name=#{content_type_name})
 	</select>
 	
+	<select id="selectByContentId" parameterType="string" resultType="Attraction">
+		select * from attraction_info as info, attraction_description as descri where info.content_id=#{content_id} and descri.content_id=#{content_id}
+	</select>
+	
 	<select id="getMaxContentId" resultType="integer">
 		select max(content_id) from attraction_info
 	</select>

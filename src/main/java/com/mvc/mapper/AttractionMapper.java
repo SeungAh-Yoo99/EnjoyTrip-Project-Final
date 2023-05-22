@@ -16,6 +16,9 @@ public interface AttractionMapper {
 
 	List<Attraction> selectBySidoCodeAndContentTypeId(String sido_name, String content_type_name) throws SQLException;
 	
+	Attraction selectByContentId(String content_id) throws SQLException;
+	
+	
 	Integer getMaxContentId() throws SQLException;
 
 	int registration(Attraction attr) throws SQLException;
