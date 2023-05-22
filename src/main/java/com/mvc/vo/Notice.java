@@ -14,5 +14,5 @@ public class Notice {
 	private String creation_date;
 	private String content;
 	private String user_id;
-
+	private String notice_title;
 }
