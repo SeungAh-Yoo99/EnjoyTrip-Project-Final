@@ -14,7 +14,7 @@
 	</select>
 	
 	<insert id="insertNotice">
-		insert into notice (creation_date,content,user_id) values(sysdate(),#{content},#{user_id})
+		insert into notice (creation_date,content,user_id,notice_title) values(sysdate(),#{content},#{user_id},#{notice_title})
 	</insert>
 	
 	<delete id="deleteNotice" parameterType="string">
@@ -22,6 +22,6 @@
 	</delete>
 	
 	<update id="modifyNotice" parameterType="Notice">
-		update notice set content=#{content}, creation_date=sysdate() where notice_id=#{notice_id}
+		update notice set content=#{content}, creation_date=sysdate(),notice_title=#{notice_title} where notice_id=#{notice_id}
 	</update>
 </mapper>

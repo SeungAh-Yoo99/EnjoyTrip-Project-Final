@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.mvc.vo.User;
 
 import io.swagger.annotations.ApiOperation;
 
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 public class NoticeController {
 	
@@ -47,6 +49,8 @@ public class NoticeController {
 	@PostMapping(value="/api/notice")
 	@ApiOperation(notes="공지사항 등록",value="공지사항 등록")
 	public Map<String,String> insertNotice(@RequestBody Notice notice,HttpSession session) throws Exception {
+		User u=new User("admin","1111","admin","admin"); //일단 테스트용으로 아직 로그인 프론트랑 연결 안해서 무조건session에 admin넣고 시작함 (삭제 해야함)
+		session.setAttribute("user", u);
 		User sessionUser=(User) session.getAttribute("user");
 		Map<String,String> map=new HashMap<>();
 		if(sessionUser!=null && sessionUser.getRole().equals("admin")) {
@@ -63,10 +67,15 @@ public class NoticeController {
 	
 	@DeleteMapping(value="/api/notice/{notice_id}")
 	@ApiOperation(notes="공지사항 삭제", value="공지사항 삭제")
-	public Map<String,String> deleteNotice(@PathVariable String notice_id) throws Exception{
-		Map<String,String> map=new HashMap<>();
-		boolean ch=service.deleteNotice(notice_id);
-		if(ch) {
+	public Map<String,String> deleteNotice(@PathVariable String notice_id,HttpSession session) throws Exception{
+		
+		User u=new User("admin","1111","admin","admin"); //일단 테스트용으로 아직 로그인 프론트랑 연결 안해서 무조건session에 admin넣고 시작함 (삭제 해야함)
+		session.setAttribute("user", u);
+		User sessionUser=(User)session.getAttribute("user");
+		Map<String,String> map=new HashMap<>(); //admin만 삭제가능하도록 해야함 
+		
+		if(sessionUser!=null && sessionUser.getRole().equals("admin")) {
+			boolean ch=service.deleteNotice(notice_id);
 			map.put("result", "success");
 		}else {
 			map.put("result", "fail");
@@ -77,6 +86,8 @@ public class NoticeController {
 	@PutMapping(value="/api/notice")
 	@ApiOperation(notes="공지사항 수정",value="공지사항 수정")
 	public Map<String,String> modifyNotice(@RequestBody Notice notice,HttpSession session) throws Exception{
+		User u=new User("admin","1111","admin","admin"); //일단 테스트용으로 아직 로그인 프론트랑 연결 안해서 무조건session에 admin넣고 시작함 (삭제 해야함)
+		session.setAttribute("user", u);
 		Map<String,String> map=new HashMap<>();
 		User sessionUser=(User)session.getAttribute("user");
 		if(sessionUser!=null && sessionUser.getRole().equals("admin")) {
