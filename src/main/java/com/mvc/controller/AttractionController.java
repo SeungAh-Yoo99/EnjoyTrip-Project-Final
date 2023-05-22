@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mvc.service.AttractionService;
 import com.mvc.vo.Attraction;
 import com.mvc.vo.AttractionLike;
+import com.mvc.vo.AttractionReview;
 import com.mvc.vo.User;
 
 import io.swagger.annotations.ApiOperation;
@@ -44,12 +45,21 @@ public class AttractionController {
 
 	@PostMapping(value = "/api/attraction/registration")
     @ApiOperation(notes="여행지 등록", value="Attraction 등록")
-    public Map<String, String> registration(@RequestBody Attraction attr) throws Exception {
-        int x = service.registration(attr);
+    public Map<String, String> registration(@RequestBody Attraction attr, HttpSession session) throws Exception {
+		User sessionUser=(User)session.getAttribute("user");
+		
+		Map<String, String> map = new HashMap<>();
+		if(sessionUser.getRole().equals("admin")) { // admin만 attraction 추가 가능
+			attr.setUser_id(sessionUser.getId());
+			int x = service.registration(attr);
 
-        Map<String, String> map = new HashMap<>();
-        if(x >= 1) map.put("result", "registration success!");
-        else map.put("result", "registration fail!");
+	        if(x >= 1) map.put("result", "registration success!");
+	        else map.put("result", "registration fail!");
+		}
+		else {
+			map.put("result", "User not matched");
+		}
+		
         return map;
     }
 	
@@ -93,5 +103,86 @@ public class AttractionController {
         if(x >= 1) map.put("result", "like success!");
         else map.put("result", "like fail!");
         return map;
+    }
+	
+	@DeleteMapping(value = "/api/attraction/like")
+    @ApiOperation(notes="여행지 좋아요 취소", value="여행지 좋아요 취소")
+    public Map<String, String> delete_like(@RequestBody AttractionLike attrLike, HttpSession session) throws Exception {
+		User sessionUser=(User)session.getAttribute("user");
+		attrLike.setUser_id(sessionUser.getId());
+		
+        int x = service.delete_like(attrLike);
+
+        Map<String, String> map = new HashMap<>();
+        if(x >= 1) map.put("result", "delete like success!");
+        else map.put("result", "delete like fail!");
+        return map;
+    }
+	
+	@PostMapping(value = "/api/attraction/review/{content_id}")
+    @ApiOperation(notes="여행지 리뷰 추가", value="여행지 리뷰 추가")
+    public Map<String, String> add_review(@RequestBody AttractionReview attrReview, @PathVariable String content_id, HttpSession session) throws Exception {
+		User sessionUser=(User)session.getAttribute("user");
+		attrReview.setUser_id(sessionUser.getId());
+		attrReview.setContent_id(content_id);
+		
+        int x = service.add_review(attrReview);
+
+        Map<String, String> map = new HashMap<>();
+        if(x >= 1) map.put("result", "add review success!");
+        else map.put("result", "add review fail!");
+        return map;
+    }
+	
+	@DeleteMapping(value = "/api/attraction/review/delete/{review_id}")
+    @ApiOperation(notes="여행지 리뷰 삭제", value="여행지 리뷰 삭제")
+    public Map<String, String> delete_review(@PathVariable String review_id, HttpSession session) throws Exception {
+		User sessionUser=(User)session.getAttribute("user");
+		String owner = service.get_review_info(review_id);
+		
+		Map<String, String> map = new HashMap<>();
+		if(sessionUser.getId().equals(owner)) { // 본인 글일 때만 삭제
+			int x = service.delete_review(review_id);
+
+	        if(x >= 1) map.put("result", "delete review success!");
+	        else map.put("result", "delete review fail!");
+		}
+		else {
+			map.put("result", "User not matched");
+		}
+		
+		return map;
+    }
+	
+	@PutMapping(value = "/api/attraction/review/modify/{review_id}")
+    @ApiOperation(notes="여행지 리뷰 수정", value="여행지 리뷰 수정")
+    public Map<String, String> modify_review(@PathVariable String review_id, HttpSession session) throws Exception {
+		User sessionUser=(User)session.getAttribute("user");
+		String owner = service.get_review_info(review_id);
+		
+		Map<String, String> map = new HashMap<>();
+		if(sessionUser.getId().equals(owner)) { // 본인 글일 때만 수정
+			int x = service.modify_review(review_id);
+
+	        if(x >= 1) map.put("result", "modify review success!");
+	        else map.put("result", "modify review fail!");
+		}
+		else {
+			map.put("result", "User not matched");
+		}
+		
+		return map;
+    }
+	
+	@GetMapping(value = "/api/attraction/review/list/{content_id}")
+    @ApiOperation(notes="content_id 여행지에 해당하는 리뷰 리스트", value="content_id 여행지에 해당하는 리뷰 리스트")
+    public List<AttractionReview> review_list(@PathVariable String content_id) throws Exception {
+        return service.review_list(content_id);
+    }
+	
+	@GetMapping(value = "/api/attraction/ad")
+    @ApiOperation(notes="광고 여행지 랜덤으로 3개 가져오기", value="광고 여행지 랜덤으로 3개 가져오기")
+    public List<Attraction> select_ad_attraction() throws Exception {
+        return service.select_ad_attraction();
     }
 }

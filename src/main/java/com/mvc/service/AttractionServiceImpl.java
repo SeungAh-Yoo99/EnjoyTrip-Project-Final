@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mvc.mapper.AttractionMapper;
 import com.mvc.vo.Attraction;
 import com.mvc.vo.AttractionLike;
+import com.mvc.vo.AttractionReview;
 
 @Service
 public class AttractionServiceImpl implements AttractionService {
@@ -52,6 +53,41 @@ public class AttractionServiceImpl implements AttractionService {
 	@Override
 	public int like(AttractionLike attrLike) throws Exception {
 		return mapper.like(attrLike);
+	}
+
+	@Override
+	public int delete_like(AttractionLike attrLike) throws Exception {
+		return mapper.delete_like(attrLike);
+	}
+
+	@Override
+	public int add_review(AttractionReview attrReview) throws Exception {
+		return mapper.add_review(attrReview);
+	}
+	
+	@Override
+	public String get_review_info(String review_id) throws Exception {
+		return mapper.get_review_info(review_id);
+	}
+
+	@Override
+	public int delete_review(String review_id) throws Exception {
+		return mapper.delete_review(review_id);
+	}
+
+	@Override
+	public int modify_review(String review_id) throws Exception {
+		return mapper.modify_review(review_id);
+	}
+
+	@Override
+	public List<AttractionReview> review_list(String content_id) throws Exception {
+		return mapper.review_list(content_id);
+	}
+
+	@Override
+	public List<Attraction> select_ad_attraction() throws Exception {
+		return mapper.select_ad_attraction();
 	}
 
 }

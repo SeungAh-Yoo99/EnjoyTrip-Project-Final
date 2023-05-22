@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mvc.vo.Attraction;
 import com.mvc.vo.AttractionLike;
+import com.mvc.vo.AttractionReview;
 
 public interface AttractionService {
 
@@ -20,5 +21,19 @@ public interface AttractionService {
 	List<Attraction> hotplace() throws Exception;
 
 	int like(AttractionLike attrLike) throws Exception;
+
+	int delete_like(AttractionLike attrLike) throws Exception;
+
+	int add_review(AttractionReview attrReview) throws Exception;
+
+	int delete_review(String review_id) throws Exception;
+
+	String get_review_info(String review_id) throws Exception;
+
+	int modify_review(String review_id) throws Exception;
+
+	List<AttractionReview> review_list(String content_id) throws Exception;
+
+	List<Attraction> select_ad_attraction() throws Exception;
 
 }

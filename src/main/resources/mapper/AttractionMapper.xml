@@ -30,10 +30,38 @@
 	</update>
 	
 	<select id="hotplace" resultType="Attraction">
-		SELECT ai.* FROM attraction_info ai JOIN (SELECT al.content_id FROM attraction_like al GROUP BY al.content_id ORDER BY COUNT(*) DESC LIMIT 10) AS subquery ON ai.content_id = subquery.content_id;
+		SELECT ai.* FROM attraction_info ai JOIN (SELECT al.content_id FROM attraction_like al GROUP BY al.content_id ORDER BY COUNT(*) DESC LIMIT 10) AS subquery ON ai.content_id = subquery.content_id
 	</select>
 	
 	<insert id="like" parameterType="AttractionLike">
 		INSERT INTO attraction_like VALUES(#{content_id}, #{user_id})
 	</insert>
+	
+	<delete id="delete_like" parameterType="AttractionLike">
+		DELETE FROM attraction_like WHERE content_id=#{content_id} AND user_id=#{user_id}
+	</delete>
+	
+	<insert id="add_review" parameterType="AttractionReview">
+		INSERT INTO attraction_review(user_id, content_id, review_content, creation_date) VALUES(#{user_id}, #{content_id}, #{review_content}, sysdate())
+	</insert>
+	
+	<select id="get_review_info" parameterType="string" resultType="string">
+		SELECT user_id FROM attraction_review WHERE review_id=#{review_id}
+	</select>
+	
+	<delete id="delete_review" parameterType="string">
+		DELETE FROM attraction_review WHERE review_id=#{review_id}
+	</delete>
+	
+	<update id="modify_review" parameterType="string">
+		update attraction_review set review_content=#{review_content} where review_id = #{review_id}
+	</update>
+	
+	<select id="review_list" parameterType="string" resultType="AttractionReview">
+		select * from attraction_review where content_id=#{content_id}
+	</select>
+	
+	<select id="select_ad_attraction" resultType="Attraction">
+		SELECT * FROM attraction_info WHERE ad = 1 ORDER BY RAND() LIMIT 3
+	</select>
 </mapper>
