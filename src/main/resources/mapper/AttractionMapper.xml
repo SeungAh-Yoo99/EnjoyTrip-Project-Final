@@ -10,7 +10,15 @@
 	</select>
 	
 	<select id="selectBySidoCodeAndContentTypeId" parameterType="string" resultType="Attraction">
-		select * from attraction_info where sido_code=#{sido_code} and content_type_id=#{content_type_id}
+		select * from attraction_info 
+		where sido_code=(
+					select sido_code
+					from sido
+					where sido_name=#{sido_name}) 
+			and content_type_id=(
+					select content_type_id
+					from content_type
+					where content_type_name=#{content_type_name})
 	</select>
 	
 	<select id="getMaxContentId" resultType="integer">

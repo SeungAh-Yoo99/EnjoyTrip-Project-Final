@@ -7,12 +7,14 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mvc.service.AttractionService;
@@ -22,7 +24,7 @@ import com.mvc.vo.AttractionReview;
 import com.mvc.vo.User;
 
 import io.swagger.annotations.ApiOperation;
-
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 public class AttractionController {
 	
@@ -37,10 +39,10 @@ public class AttractionController {
 	
 	@GetMapping(value = "/api/attraction/search")
     @ApiOperation(notes="지역별 원하는 컨텐츠 별 관광지 정보 찾기", value="sido_code & content_type_id 별 관광지 정보 찾기")
-    public List<Attraction> selectBySidoCodeAndContentTypeId(@RequestBody Map<String, String> rb) throws Exception {
-		String sido_code = rb.get("sido_code");
-		String content_type_id = rb.get("content_type_id");
-        return service.selectBySidoCodeAndContentTypeId(sido_code, content_type_id);
+    public List<Attraction> selectBySidoCodeAndContentTypeId(@RequestParam("sido_name") String sidoName, @RequestParam("content_type_name") String contentTypeName) throws Exception {
+		String sido_name = sidoName;
+		String content_type_name = contentTypeName;
+        return service.selectBySidoCodeAndContentTypeId(sido_name, content_type_name);
     }
 
 	@PostMapping(value = "/api/attraction/registration")
