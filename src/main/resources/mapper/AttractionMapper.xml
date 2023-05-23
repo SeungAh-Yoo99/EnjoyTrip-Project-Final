@@ -10,15 +10,22 @@
 	</select>
 	
 	<select id="selectBySidoCodeAndContentTypeId" parameterType="string" resultType="Attraction">
-		select * from attraction_info 
-		where sido_code=(
-					select sido_code
-					from sido
-					where sido_name=#{sido_name}) 
-			and content_type_id=(
-					select content_type_id
-					from content_type
-					where content_type_name=#{content_type_name})
+		SELECT ai.content_id, ai.title, ai.addr1, ai.first_image
+		FROM attraction_info ai
+		JOIN sido s ON ai.sido_code = s.sido_code
+		JOIN content_type ct ON ai.content_type_id = ct.content_type_id
+		WHERE s.sido_name = #{sido_name}
+  		AND ct.content_type_name = #{content_type_name}
+	</select>
+	
+	<select id="selectBySidoCodeAndContentTypeIdWithLogin" parameterType="string" resultType="Attraction">
+		SELECT ai.content_id, ai.title, ai.addr1, ai.first_image, al.user_id
+		FROM attraction_info ai
+		LEFT JOIN attraction_like al ON ai.content_id = al.content_id AND al.user_id = #{user_id}
+		JOIN sido s ON ai.sido_code = s.sido_code
+		JOIN content_type ct ON ai.content_type_id = ct.content_type_id
+		WHERE s.sido_name = #{sido_name}
+  		AND ct.content_type_name = #{content_type_name}
 	</select>
 	
 	<select id="selectByContentId" parameterType="string" resultType="Attraction">

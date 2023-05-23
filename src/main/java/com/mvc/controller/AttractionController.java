@@ -24,7 +24,7 @@ import com.mvc.vo.AttractionReview;
 import com.mvc.vo.User;
 
 import io.swagger.annotations.ApiOperation;
-@CrossOrigin(origins = {"*"}, maxAge = 6000)
+@CrossOrigin(origins = {"*"})
 @RestController
 public class AttractionController {
 	
@@ -45,11 +45,18 @@ public class AttractionController {
 	}
 	
 	@GetMapping(value = "/api/attraction/search")
-    @ApiOperation(notes="지역별 원하는 컨텐츠 별 관광지 정보 찾기", value="sido_code & content_type_id 별 관광지 정보 찾기")
-    public List<Attraction> selectBySidoCodeAndContentTypeId(@RequestParam("sido_name") String sidoName, @RequestParam("content_type_name") String contentTypeName) throws Exception {
-		String sido_name = sidoName;
-		String content_type_name = contentTypeName;
-        return service.selectBySidoCodeAndContentTypeId(sido_name, content_type_name);
+    @ApiOperation(notes="sido_code & content_type_id 별 관광지 정보 찾기", value="sido_code & content_type_id 별 관광지 정보 찾기")
+    public List<Attraction> selectBySidoCodeAndContentTypeId(@RequestParam("sido_name") String sido_name, @RequestParam("content_type_name") String content_type_name, HttpSession session) throws Exception {
+		User sessionUser = (User)session.getAttribute("user");
+		
+		if(sessionUser == null) {
+			return service.selectBySidoCodeAndContentTypeId(sido_name, content_type_name);
+		}
+		else {
+			String user_id = sessionUser.getId();
+			return service.selectBySidoCodeAndContentTypeIdWithLogin(sido_name, content_type_name, user_id);
+		}
+	
     }
 
 	@PostMapping(value = "/api/attraction/registration")
@@ -104,7 +111,12 @@ public class AttractionController {
     @ApiOperation(notes="여행지 좋아요", value="여행지 좋아요")
     public Map<String, String> like(@RequestBody AttractionLike attrLike, HttpSession session) throws Exception {
 		User sessionUser=(User)session.getAttribute("user");
+		
+		if(sessionUser == null) System.out.println("바보");
+		else System.out.println(sessionUser.getId());
 		attrLike.setUser_id(sessionUser.getId());
+		
+		System.out.println(attrLike.getContent_id() + " " + attrLike.getUser_id());
 		
         int x = service.like(attrLike);
 
