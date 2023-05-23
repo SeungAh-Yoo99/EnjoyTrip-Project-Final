@@ -29,4 +29,8 @@
 	<update id="newPw" parameterType="User">
 		update user set pw = #{pw} where id = #{id}
 	</update>
+	
+	<select id="id_check" parameterType="string" resultType="string" >
+		select id from user where id = #{id}
+	</select>
 </mapper>

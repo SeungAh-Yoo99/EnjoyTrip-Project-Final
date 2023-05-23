@@ -9,4 +9,5 @@ public interface UserService {
 	int withdraw(String id) throws Exception;
 	User login(User user) throws Exception;
 	int newPw(User user) throws Exception;
+	String id_check(String id) throws Exception;
 }

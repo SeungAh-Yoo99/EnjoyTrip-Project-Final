@@ -113,4 +113,16 @@ public class UserController {
         else map.put("result", "findPw fail!");
         return map;
     }
+    
+    @PostMapping(value = "/api/user/id/check")
+    @ApiOperation(notes="아이디 중복 검사", value="아이디 중복 검사")
+    public Map<String, String> id_check(@RequestBody Map<String, String> rb) throws Exception {
+    	String id = rb.get("id");
+        String already_exist = service.id_check(id);
+
+        Map<String, String> map = new HashMap<>();
+        if(already_exist == null) map.put("result", "available");
+        else map.put("result", "already exist");
+        return map;
+    }
 }

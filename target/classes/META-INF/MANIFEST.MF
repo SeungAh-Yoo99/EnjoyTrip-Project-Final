@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Build-Jdk-Spec: 11
+=======
+Build-Jdk-Spec: 17
+>>>>>>> fd555f789f6d50e540ad7760bd55f65278653c07
 Implementation-Title: SpringBootMVCCustomer
 Implementation-Version: 0.0.1-SNAPSHOT
 Created-By: Maven Integration for Eclipse

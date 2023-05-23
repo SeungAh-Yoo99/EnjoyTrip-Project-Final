@@ -40,4 +40,9 @@ public class UserServiceImpl implements UserService {
 	public int newPw(User user) throws Exception {
 		return mapper.newPw(user);
 	}
+
+	@Override
+	public String id_check(String id) throws Exception {
+		return mapper.id_check(id);
+	}
 }
