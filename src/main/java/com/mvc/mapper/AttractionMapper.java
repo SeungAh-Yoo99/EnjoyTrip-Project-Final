@@ -44,4 +44,6 @@ public interface AttractionMapper {
 	List<AttractionReview> review_list(String content_id) throws SQLException;
 
 	List<Attraction> select_ad_attraction() throws SQLException;
+	
+	int islike(AttractionLike attrlike) throws SQLException;
 }

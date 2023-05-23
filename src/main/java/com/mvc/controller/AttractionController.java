@@ -114,6 +114,20 @@ public class AttractionController {
         return map;
     }
 	
+	@GetMapping(value="/api/attraction/islike/{content_id}")
+	@ApiOperation(notes="좋아요 여부", value="해당 user_id가 해당 content_id를 좋아요했는지에 대한 여부 체크")
+	public Map<String,String> islike(@PathVariable String content_id,HttpSession session) throws Exception{
+		Map<String,String> map=new HashMap<>();
+		User sessionUser=(User)session.getAttribute("user");
+		AttractionLike attrlike=new AttractionLike(content_id,sessionUser.getId()); //임의로 넣음 (삭제해야함)
+		
+		int x=service.isLike(attrlike);
+		map.put("result", Integer.toString(x));
+		map.put("user_id", sessionUser.getId());
+		return map;
+	}
+	
+	
 	@DeleteMapping(value = "/api/attraction/like")
     @ApiOperation(notes="여행지 좋아요 취소", value="여행지 좋아요 취소")
     public Map<String, String> delete_like(@RequestBody AttractionLike attrLike, HttpSession session) throws Exception {

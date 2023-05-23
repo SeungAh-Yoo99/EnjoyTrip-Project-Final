@@ -36,5 +36,6 @@ public interface AttractionService {
 	List<AttractionReview> review_list(String content_id) throws Exception;
 
 	List<Attraction> select_ad_attraction() throws Exception;
-
+	
+	int isLike(AttractionLike attrlike) throws Exception;
 }
