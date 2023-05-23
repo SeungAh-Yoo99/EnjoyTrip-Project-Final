@@ -24,7 +24,6 @@ import com.mvc.vo.User;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 public class NoticeController {
 	

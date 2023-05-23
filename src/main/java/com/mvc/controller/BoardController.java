@@ -22,7 +22,6 @@ import com.mvc.vo.User;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin("*")
 @RestController
 public class BoardController {
 	@Autowired

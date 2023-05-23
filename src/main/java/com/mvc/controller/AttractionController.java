@@ -24,7 +24,7 @@ import com.mvc.vo.AttractionReview;
 import com.mvc.vo.User;
 
 import io.swagger.annotations.ApiOperation;
-@CrossOrigin(origins = {"*"})
+
 @RestController
 public class AttractionController {
 	
