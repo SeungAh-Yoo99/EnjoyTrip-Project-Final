@@ -45,4 +45,9 @@ public class UserServiceImpl implements UserService {
 	public String id_check(String id) throws Exception {
 		return mapper.id_check(id);
 	}
+
+	@Override
+	public String name_check(String name) throws Exception {
+		return mapper.name_check(name);
+	}
 }

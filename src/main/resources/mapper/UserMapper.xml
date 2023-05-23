@@ -33,4 +33,8 @@
 	<select id="id_check" parameterType="string" resultType="string" >
 		select id from user where id = #{id}
 	</select>
+	
+	<select id="name_check" parameterType="string" resultType="string" >
+		select name from user where name = #{name}
+	</select>
 </mapper>

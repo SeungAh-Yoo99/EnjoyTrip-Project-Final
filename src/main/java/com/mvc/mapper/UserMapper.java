@@ -13,5 +13,6 @@ public interface UserMapper {
 	int withdraw(String id) throws SQLException;
 	User login(User user) throws SQLException;
 	int newPw(User user) throws SQLException;
-	String id_check(String id)throws SQLException;
+	String id_check(String id) throws SQLException;
+	String name_check(String name) throws SQLException;
 }

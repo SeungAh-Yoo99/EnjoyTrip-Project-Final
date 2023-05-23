@@ -125,4 +125,16 @@ public class UserController {
         else map.put("result", "already exist");
         return map;
     }
+    
+    @PostMapping(value = "/api/user/name/check")
+    @ApiOperation(notes="이름 중복 검사", value="이름 중복 검사")
+    public Map<String, String> name_check(@RequestBody Map<String, String> rb) throws Exception {
+    	String name = rb.get("name");
+        String already_exist = service.name_check(name);
+
+        Map<String, String> map = new HashMap<>();
+        if(already_exist == null) map.put("result", "available");
+        else map.put("result", "already exist");
+        return map;
+    }
 }

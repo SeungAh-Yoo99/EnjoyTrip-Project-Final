@@ -10,4 +10,5 @@ public interface UserService {
 	User login(User user) throws Exception;
 	int newPw(User user) throws Exception;
 	String id_check(String id) throws Exception;
+	String name_check(String name) throws Exception;
 }
