@@ -72,7 +72,7 @@ public class UserController {
 	@ApiOperation(notes="로그인", value="로그인")
 	public Map<String, String> login(@RequestBody User user, HttpSession session) throws Exception{
         User u = service.login(user);
-
+        
         Map<String, String> map = new HashMap<>();
         if(u == null) {
             map.put("result", "login fail!");
