@@ -13,11 +13,12 @@ import java.util.List;
 public interface AttractionMapper {
 
 	List<Attraction> selectBySidoCode(String sido_code) throws SQLException;
-
+	
 	List<Attraction> selectBySidoCodeAndContentTypeId(String sido_name, String content_type_name) throws SQLException;
+
+	List<Attraction> selectBySidoCodeAndContentTypeIdWithLogin(String sido_name, String content_type_name, String user_id) throws SQLException;
 	
 	Attraction selectByContentId(String content_id) throws SQLException;
-	
 	
 	Integer getMaxContentId() throws SQLException;
 

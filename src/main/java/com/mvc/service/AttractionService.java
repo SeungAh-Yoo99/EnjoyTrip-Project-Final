@@ -9,10 +9,13 @@ import com.mvc.vo.AttractionReview;
 public interface AttractionService {
 
 	List<Attraction> selectBySidoCode(String sido_code) throws Exception;
+	
+	List<Attraction> selectBySidoCodeAndContentTypeId(String sido_name, String content_type_name) throws Exception;
 
-	List<Attraction> selectBySidoCodeAndContentTypeId(String sido_code, String content_type_id) throws Exception;
+	List<Attraction> selectBySidoCodeAndContentTypeIdWithLogin(String sido_code, String content_type_id, String user_id) throws Exception;
 
 	Attraction selectByContentId(String content_id) throws Exception;
+	
 	int registration(Attraction attr) throws Exception;
 
 	int delete(String content_id) throws Exception;

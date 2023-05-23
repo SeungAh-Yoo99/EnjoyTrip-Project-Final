@@ -20,11 +20,15 @@ public class AttractionServiceImpl implements AttractionService {
 	public List<Attraction> selectBySidoCode(String sido_code) throws Exception {
 		return mapper.selectBySidoCode(sido_code);
 	}
+	
+	@Override
+	public List<Attraction> selectBySidoCodeAndContentTypeId(String sido_name, String content_type_name) throws Exception {
+		return mapper.selectBySidoCodeAndContentTypeId(sido_name, content_type_name);
+	}
 
 	@Override
-	public List<Attraction> selectBySidoCodeAndContentTypeId(String sido_code, String content_type_id)
-			throws Exception {
-		return mapper.selectBySidoCodeAndContentTypeId(sido_code, content_type_id);
+	public List<Attraction> selectBySidoCodeAndContentTypeIdWithLogin(String sido_name, String content_type_name, String user_id) throws Exception {
+		return mapper.selectBySidoCodeAndContentTypeIdWithLogin(sido_name, content_type_name, user_id);
 	}
 
 	@Override
