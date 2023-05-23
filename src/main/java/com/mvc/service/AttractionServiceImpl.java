@@ -95,4 +95,10 @@ public class AttractionServiceImpl implements AttractionService {
 		return mapper.selectByContentId(content_id);
 	}
 
+	@Override
+	public int isLike(AttractionLike attrlike) throws Exception {
+		
+		return mapper.islike(attrlike);
+	}
+
 }

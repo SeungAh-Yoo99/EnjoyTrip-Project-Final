@@ -42,7 +42,7 @@
 	</update>
 	
 	<select id="hotplace" resultType="Attraction">
-		SELECT ai.* FROM attraction_info ai JOIN (SELECT al.content_id FROM attraction_like al GROUP BY al.content_id ORDER BY COUNT(*) DESC LIMIT 10) AS subquery ON ai.content_id = subquery.content_id
+		SELECT ai.* FROM attraction_info ai JOIN (SELECT al.content_id FROM attraction_like al GROUP BY al.content_id ORDER BY COUNT(*) DESC LIMIT 9) AS subquery ON ai.content_id = subquery.content_id
 	</select>
 	
 	<insert id="like" parameterType="AttractionLike">
@@ -75,5 +75,9 @@
 	
 	<select id="select_ad_attraction" resultType="Attraction">
 		SELECT * FROM attraction_info WHERE ad = 1 ORDER BY RAND() LIMIT 3
+	</select>
+	
+	<select id="islike" resultType="integer">
+		select count(*) from attraction_like where content_id=#{content_id} and user_id=#{user_id}
 	</select>
 </mapper>
