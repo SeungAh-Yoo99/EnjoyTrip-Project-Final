@@ -3,6 +3,7 @@ package com.mvc.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+<<<<<<< HEAD
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -30,6 +31,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin("*")
+=======
+>>>>>>> b2ce33acffcd69ea455dbc4665d5525c0390cb10
 @RestController
 @RequestMapping("/api/user")
 @Api("사용자 컨트롤러  API")

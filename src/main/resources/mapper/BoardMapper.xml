@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mvc.mapper.BoardMapper">
+	
+	<select id="selectAll" resultType="Board">
+		select * from board
+	</select>
+	
+	<insert id="insertBoard">
+		insert into board (creation_date,board_content,board_title,user_id) values (sysdate(),#{board_content},#{board_title},#{user_id})
+	</insert>
+	
+	<delete id="deleteBoard">
+		delete from board where board_id=#{board_id} and user_id=#{user_id}	
+	</delete>
+	
+	<update id="modifyBoard">
+		update board set creation_date=sysdate(), board_content=#{board_content}, board_title=#{board_title} where board_id=#{board_id} and user_id=#{user_id}
+	</update>
+	
+	<select id="detailBoard" parameterType="string" resultType="Board">
+		select * from board where board_id=#{board_id}
+	</select>
+	
+</mapper>
