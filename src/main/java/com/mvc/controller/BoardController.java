@@ -59,15 +59,17 @@ public class BoardController {
 		return map;
 	}
 	
-	@DeleteMapping(value="/api/board/delete")
+	@PutMapping(value="/api/board/delete")
 	@ApiOperation(notes="게시글 삭제",value="게시글 삭제")
-	public Map<String,String> deleteBoard(@RequestBody Board board,HttpSession session) throws Exception{
+	public Map<String,String> deleteBoard(HttpSession session,@RequestBody Board board) throws Exception{
 		Map<String,String> map=new HashMap<>();
 		User SessionUser=(User)session.getAttribute("user");
+		System.out.println(SessionUser.getId());
 		if(SessionUser==null) {
 			map.put("result", "로그인 하세요");
 		}else {
 			board.setUser_id(SessionUser.getId());
+			System.out.println(board.getUser_id());
 			boolean ch=service.deleteBoard(board);
 			if(ch) {
 				map.put("result", "board 삭제 성공");
@@ -85,7 +87,7 @@ public class BoardController {
 	public Map<String,String> modifyBoard(HttpSession session, @RequestBody Board board) throws Exception{
 		Map<String,String> map=new HashMap<>();
 		User SessionUser=(User)session.getAttribute("user");
-
+		System.out.println(SessionUser.getId());
 		if(SessionUser==null) {
 			map.put("result", "로그인 하세요");
 		}else {
