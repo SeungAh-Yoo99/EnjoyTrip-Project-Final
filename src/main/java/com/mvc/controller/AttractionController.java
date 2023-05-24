@@ -166,34 +166,43 @@ public class AttractionController {
 	
 	@PostMapping(value = "/review/{content_id}")
     @ApiOperation(notes="여행지 리뷰 추가", value="여행지 리뷰 추가")
-    public Map<String, String> add_review(@RequestBody AttractionReview attrReview, @PathVariable String content_id, HttpSession session) throws Exception {
-		User sessionUser=(User)session.getAttribute("user");
-		attrReview.setUser_id(sessionUser.getId());
-		attrReview.setContent_id(content_id);
+    public Map<String, String> add_review(@RequestBody AttractionReview attrReview, @PathVariable String content_id, HttpServletRequest request) throws Exception {
+		String user_id = jwtService.getUserId(request.getHeader("access-token"));
 		
-        int x = service.add_review(attrReview);
+		Map<String, String> map = new HashMap<>();
+		if(user_id == null) {
+			map.put("result", "login");
+		}
+		else {
+			attrReview.setUser_id(user_id);
+			attrReview.setContent_id(content_id);
+			
+			int x = service.add_review(attrReview);
 
-        Map<String, String> map = new HashMap<>();
-        if(x >= 1) map.put("result", "add review success!");
-        else map.put("result", "add review fail!");
+	        if(x >= 1) map.put("result", "add review success!");
+	        else map.put("result", "add review fail!");
+		}
         return map;
     }
 	
 	@DeleteMapping(value = "/review/delete/{review_id}")
     @ApiOperation(notes="여행지 리뷰 삭제", value="여행지 리뷰 삭제")
-    public Map<String, String> delete_review(@PathVariable String review_id, HttpSession session) throws Exception {
-		User sessionUser=(User)session.getAttribute("user");
+    public Map<String, String> delete_review(@PathVariable String review_id, HttpServletRequest request) throws Exception {
+		String user_id = jwtService.getUserId(request.getHeader("access-token"));
 		String owner = service.get_review_info(review_id);
 		
 		Map<String, String> map = new HashMap<>();
-		if(sessionUser.getId().equals(owner)) { // 본인 글일 때만 삭제
+		if(user_id == null) {
+			map.put("result", "login");
+		}
+		else if(!user_id.equals(owner)) {
+			map.put("result", "User not matched");
+		}
+		else {
 			int x = service.delete_review(review_id);
 
 	        if(x >= 1) map.put("result", "delete review success!");
 	        else map.put("result", "delete review fail!");
-		}
-		else {
-			map.put("result", "User not matched");
 		}
 		
 		return map;
@@ -201,19 +210,22 @@ public class AttractionController {
 	
 	@PutMapping(value = "/review/modify/{review_id}")
     @ApiOperation(notes="여행지 리뷰 수정", value="여행지 리뷰 수정")
-    public Map<String, String> modify_review(@PathVariable String review_id, HttpSession session) throws Exception {
-		User sessionUser=(User)session.getAttribute("user");
+    public Map<String, String> modify_review(@PathVariable String review_id, HttpServletRequest request) throws Exception {
+		String user_id = jwtService.getUserId(request.getHeader("access-token"));
 		String owner = service.get_review_info(review_id);
 		
 		Map<String, String> map = new HashMap<>();
-		if(sessionUser.getId().equals(owner)) { // 본인 글일 때만 수정
+		if(user_id == null) {
+			map.put("result", "login");
+		}
+		else if(!user_id.equals(owner)) {
+			map.put("result", "User not matched");
+		}
+		else { // 본인 글일 때만 수정
 			int x = service.modify_review(review_id);
 
 	        if(x >= 1) map.put("result", "modify review success!");
 	        else map.put("result", "modify review fail!");
-		}
-		else {
-			map.put("result", "User not matched");
 		}
 		
 		return map;
