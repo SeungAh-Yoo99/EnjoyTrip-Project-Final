@@ -89,7 +89,7 @@ public class UserController {
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
 		if (jwtService.checkToken(request.getHeader("access-token"))) {
-			logger.info("사용 가능한 토큰!!!");
+//			logger.info("사용 가능한 토큰!!!");
 			try {
 //				로그인 사용자 정보.
 				User user = service.userInfo(id);
@@ -102,7 +102,7 @@ public class UserController {
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 			}
 		} else {
-			logger.error("사용 불가능 토큰!!!");
+//			logger.error("사용 불가능 토큰!!!");
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
@@ -162,18 +162,22 @@ public class UserController {
 
     @PutMapping(value = "/modify")
     @ApiOperation(notes="회원 정보 수정", value="User 객체 수정")
-    public Map<String, String> modify(HttpSession session,@RequestBody User user) throws Exception {
-    	User sessionUser=(User)session.getAttribute("user");
-    	sessionUser.setName(user.getName());
+    public Map<String, String> modify(HttpServletRequest request,@RequestBody Map<String, String> rb) throws Exception {
+    	String user_id = jwtService.getUserId(request.getHeader("access-token"));
     	
-        int x = service.modify((User)session.getAttribute("user"));
+    	Map<String, String> map = new HashMap<>();
+    	if(user_id == null) {
+    		map.put("result", "login");
+    	}
+    	else {
+    		User user = new User(user_id, null, rb.get("name"), null);
+    		int x = service.modify(user);
+    		if(x >= 1) {
+            	map.put("result", "modify success!");
+            }
+            else map.put("result", "modify fail!");
+    	}
 
-        Map<String, String> map = new HashMap<>();
-        if(x >= 1) {
-        	map.put("result", "modify success!");
-        	session.setAttribute("user", sessionUser);
-        }
-        else map.put("result", "modify fail!");
         return map;
     }
 
@@ -239,5 +243,21 @@ public class UserController {
         if(already_exist == null) map.put("result", "available");
         else map.put("result", "already exist");
         return map;
+    }
+    
+    @GetMapping(value = "/islogin")
+    @ApiOperation(notes="로그인 유효 검사", value="로그인 유효 검사")
+    public Map<String, String> isLogin(HttpServletRequest request) throws Exception {
+    	String user_id = jwtService.getUserId(request.getHeader("access-token"));
+    	
+    	Map<String, String> map = new HashMap<>();
+    	if(user_id == null) {
+    		map.put("result", "login");
+    	}
+    	else {
+    		map.put("result", "success");
+    	}
+    	
+    	return map;
     }
 }

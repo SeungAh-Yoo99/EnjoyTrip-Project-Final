@@ -138,7 +138,7 @@ public class AttractionController {
 	
 	@GetMapping(value="/islike/{content_id}")
 	@ApiOperation(notes="좋아요 여부", value="해당 user_id가 해당 content_id를 좋아요했는지에 대한 여부 체크")
-	public Map<String,String> islike(@PathVariable String content_id,HttpSession session) throws Exception{
+	public Map<String,String> islike(@PathVariable String content_id, HttpSession session) throws Exception{
 		Map<String,String> map=new HashMap<>();
 		User sessionUser=(User)session.getAttribute("user");
 		AttractionLike attrlike=new AttractionLike(content_id,sessionUser.getId()); //임의로 넣음 (삭제해야함)
@@ -150,17 +150,23 @@ public class AttractionController {
 	}
 	
 	
-	@DeleteMapping(value = "/like")
+	@DeleteMapping(value = "/like/{content_id}")
     @ApiOperation(notes="여행지 좋아요 취소", value="여행지 좋아요 취소")
-    public Map<String, String> delete_like(@RequestBody AttractionLike attrLike, HttpSession session) throws Exception {
-		User sessionUser=(User)session.getAttribute("user");
-		attrLike.setUser_id(sessionUser.getId());
+    public Map<String, String> delete_like(@PathVariable String content_id, HttpServletRequest request) throws Exception {
+		String user_id = jwtService.getUserId(request.getHeader("access-token"));
 		
-        int x = service.delete_like(attrLike);
+		Map<String, String> map = new HashMap<>();
+		if(user_id == null) {
+			map.put("result", "login");
+		}
+		else {
+			AttractionLike attrLike = new AttractionLike(content_id, user_id);
+			int x = service.delete_like(attrLike);
 
-        Map<String, String> map = new HashMap<>();
-        if(x >= 1) map.put("result", "delete like success!");
-        else map.put("result", "delete like fail!");
+	        if(x >= 1) map.put("result", "delete like success!");
+	        else map.put("result", "delete like fail!");
+		}
+
         return map;
     }
 	

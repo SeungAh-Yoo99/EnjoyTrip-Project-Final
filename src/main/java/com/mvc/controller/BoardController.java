@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mvc.service.BoardService;
+import com.mvc.service.JwtServiceImpl;
 import com.mvc.vo.Board;
 import com.mvc.vo.User;
 
@@ -27,6 +29,9 @@ public class BoardController {
 	@Autowired
 	BoardService service;
 	
+	@Autowired
+	private JwtServiceImpl jwtService;
+	
 	@GetMapping(value="/api/board")
 	@ApiOperation(notes="게시판 조회", value="게시판 조회")
 	public List<Board> selectAll() throws Exception{
@@ -36,16 +41,16 @@ public class BoardController {
 	
 	@PostMapping(value="/api/board")
 	@ApiOperation(notes="게시판 글 등록",value="게시판 글 등록")
-	public Map<String,String> insertBoard(@RequestBody Board board,HttpSession session) throws Exception{
+	public Map<String,String> insertBoard(@RequestBody Board board,HttpServletRequest request) throws Exception{
 		Map<String,String> map=new HashMap<>();
-		User SessionUser=(User)session.getAttribute("user");
+		String user_id = jwtService.getUserId(request.getHeader("access-token"));
 		
 		
-		if(SessionUser==null) {
+		if(user_id==null) {
 			map.put("result", "로그인 하세요");
 		}
 		else {
-			board.setUser_id(SessionUser.getId());
+			board.setUser_id(user_id);
 			boolean ch=service.insertBoard(board);
 			if(ch) {
 				map.put("result", "board 등록 완료");
@@ -61,15 +66,13 @@ public class BoardController {
 	
 	@PutMapping(value="/api/board/delete")
 	@ApiOperation(notes="게시글 삭제",value="게시글 삭제")
-	public Map<String,String> deleteBoard(HttpSession session,@RequestBody Board board) throws Exception{
+	public Map<String,String> deleteBoard(HttpServletRequest request,@RequestBody Board board) throws Exception{
 		Map<String,String> map=new HashMap<>();
-		User SessionUser=(User)session.getAttribute("user");
-		System.out.println(SessionUser.getId());
-		if(SessionUser==null) {
+		String user_id = jwtService.getUserId(request.getHeader("access-token"));
+		if(user_id==null) {
 			map.put("result", "로그인 하세요");
 		}else {
-			board.setUser_id(SessionUser.getId());
-			System.out.println(board.getUser_id());
+			board.setUser_id(user_id);
 			boolean ch=service.deleteBoard(board);
 			if(ch) {
 				map.put("result", "board 삭제 성공");
@@ -84,14 +87,13 @@ public class BoardController {
 	
 	@PutMapping(value="/api/board/modify")
 	@ApiOperation(notes="게시글 수정", value="게시글 수정")
-	public Map<String,String> modifyBoard(HttpSession session, @RequestBody Board board) throws Exception{
+	public Map<String,String> modifyBoard(HttpServletRequest request, @RequestBody Board board) throws Exception{
 		Map<String,String> map=new HashMap<>();
-		User SessionUser=(User)session.getAttribute("user");
-		System.out.println(SessionUser.getId());
-		if(SessionUser==null) {
+		String user_id = jwtService.getUserId(request.getHeader("access-token"));
+		if(user_id==null) {
 			map.put("result", "로그인 하세요");
 		}else {
-			board.setUser_id(SessionUser.getId());
+			board.setUser_id(user_id);
 			boolean ch=service.modifyBoard(board);
 			if(ch) {
 				map.put("result", "board 수정 완료");
