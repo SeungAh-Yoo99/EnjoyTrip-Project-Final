@@ -34,8 +34,9 @@
 		where id = #{id}
 	</select>
 
+
 	<insert id="join" parameterType="User">
-		insert into user values(#{id}, #{pw}, #{name}, #{role})
+		insert into user(id, pw, name, role) values(#{id}, #{pw}, #{name}, #{role})
 	</insert>
 
 	<update id="modify" parameterType="User">

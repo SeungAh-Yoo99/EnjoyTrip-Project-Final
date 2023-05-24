@@ -3,7 +3,6 @@ package com.mvc.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-<<<<<<< HEAD
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -30,9 +29,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-@CrossOrigin("*")
-=======
->>>>>>> b2ce33acffcd69ea455dbc4665d5525c0390cb10
 @RestController
 @RequestMapping("/api/user")
 @Api("사용자 컨트롤러  API")
@@ -128,7 +124,6 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-
 	}
     
     @ApiOperation(value = "Access Token 재발급", notes = "만료된 access token을 재발급받는다.", response = Map.class)
