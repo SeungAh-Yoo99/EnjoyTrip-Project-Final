@@ -6,6 +6,34 @@
 <!-- mapper file : query가 들어 있음 -->
 <mapper namespace="com.mvc.mapper.UserMapper">
 
+	<select id="login" resultType="User" parameterType="User">
+		select id, name, role from user where id = #{id} and pw = #{pw}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update user
+		set token = #{token}
+		where id = #{id}
+	</update>
+	
+	<select id="userInfo" parameterType="string" resultType="User">
+		select id, name, role
+		from user
+		where id = #{id}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update user
+		set token = #{token, jdbcType=VARCHAR}
+		where id = #{id}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from user
+		where id = #{id}
+	</select>
+
 	<insert id="join" parameterType="User">
 		insert into user values(#{id}, #{pw}, #{name}, #{role})
 	</insert>
@@ -21,10 +49,6 @@
 	<delete id="withdraw" parameterType="string">
 		delete from user where id = #{id}
 	</delete>
-
-	<select id="login" resultType="User" parameterType="User">
-		select * from user where id = #{id} and pw = #{pw}
-	</select>
 
 	<update id="newPw" parameterType="User">
 		update user set pw = #{pw} where id = #{id}
