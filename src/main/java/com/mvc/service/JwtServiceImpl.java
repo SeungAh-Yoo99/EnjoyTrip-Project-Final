@@ -32,7 +32,7 @@ public class JwtServiceImpl implements JwtService{
 	
 	@Override
 	public <T> String createAccessToken(String key, T data) {
-		return create(key, data, "access-token", 1000 * 60 * 60 * 24  * ACCESS_TOKEN_EXPIRE_MINUTES);
+		return create(key, data, "access-token", 1000 * 60 * 60 * 24 * ACCESS_TOKEN_EXPIRE_MINUTES);
 	}
 	
 	// AccessToken에 비해 유효기간을 길게...
@@ -142,4 +142,18 @@ public class JwtServiceImpl implements JwtService{
 	public String getUserId() {
 		return (String) this.get("user").get("userid");
 	}
+
+	@Override
+	public  String getUserId(String jwt) {
+		Jws<Claims> claims = null;
+		try {
+			claims = Jwts.parser().setSigningKey(SALT.getBytes("UTF-8")).parseClaimsJws(jwt);
+		} catch (Exception e) {
+			return null; 
+		}
+		Map<String, Object> value = claims.getBody();
+		return (String) value.get("userid");
+	}
+	
+	
 }

@@ -14,5 +14,7 @@ public interface JwtService {
 	
 	String getUserId();
 	
+	String getUserId(String jwt);
+	
 	boolean checkToken(String jwt);
 }
